@@ -10,7 +10,7 @@ public struct MenuBarView: View {
     }
 
     public var body: some View {
-        HStack(alignment: .top, spacing: 14) {
+        HStack(alignment: .top, spacing: 10) {
             VStack {
                 appIcon
                 Spacer(minLength: 0)
@@ -50,8 +50,8 @@ public struct MenuBarView: View {
                 }
             }
         }
-        .padding(14)
-        .frame(width: 380)
+        .padding(12)
+        .frame(width: 318)
     }
 
     private var appIcon: some View {
@@ -66,8 +66,8 @@ public struct MenuBarView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .frame(width: 96, height: 96)
-        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .frame(width: 82, height: 82)
+        .clipShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
     }
 
     private var playbackLine: String {
