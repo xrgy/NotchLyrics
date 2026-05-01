@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build release assets
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          scripts/package_release.sh "$VERSION"
+
+      - name: Publish GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          TITLE="NotchLyrics $VERSION"
+          NOTES="macOS release for NotchLyrics $VERSION."
+
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            gh release upload "$GITHUB_REF_NAME" release/NotchLyrics-"$VERSION"-macos-* --clobber
+          else
+            gh release create "$GITHUB_REF_NAME" release/NotchLyrics-"$VERSION"-macos-* --title "$TITLE" --notes "$NOTES"
+          fi

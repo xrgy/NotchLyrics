@@ -121,9 +121,11 @@ scripts/package_release.sh 0.1.0
 这个脚本会重新生成 `dist/NotchLyrics.app`，并在 `release/` 目录下生成可上传到 GitHub Release 的产物：
 
 ```text
-release/NotchLyrics-0.1.0-macos-arm64
-release/NotchLyrics-0.1.0-macos-arm64.zip
+release/NotchLyrics-0.1.0-macos-<arch>
+release/NotchLyrics-0.1.0-macos-<arch>.zip
 ```
+
+在 Apple Silicon Mac 上，`<arch>` 通常是 `arm64`。
 
 ## 使用方式
 
@@ -159,6 +161,7 @@ dist/NotchLyrics.app       本地使用的 app bundle
 - `NotchPanelController.swift`：浮层 NSPanel 创建、定位和展开动画。
 - `MenuBarView.swift`：菜单栏窗口 UI。
 - `scripts/package_release.sh`：构建 release 二进制、生成 app bundle 和 GitHub Release 压缩包。
+- `.github/workflows/release.yml`：推送 `v*` tag 时自动构建并发布 GitHub Release。
 
 ## 验证
 
