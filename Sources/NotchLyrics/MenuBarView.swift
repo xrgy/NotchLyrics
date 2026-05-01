@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 public struct MenuBarView: View {
@@ -10,8 +11,18 @@ public struct MenuBarView: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("NotchLyrics \(version)")
-                .font(.system(size: 16, weight: .bold))
+            HStack(spacing: 10) {
+                appIcon
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text("NotchLyrics")
+                        .font(.system(size: 16, weight: .bold))
+
+                    Text(version)
+                        .font(.system(size: 11, weight: .medium))
+                        .foregroundStyle(.secondary)
+                }
+            }
 
             Text(model.track.map { "\($0.title) · \($0.artistLine)" } ?? model.statusText)
                 .font(.system(size: 12, weight: .medium))
@@ -42,5 +53,21 @@ public struct MenuBarView: View {
         }
         .padding(14)
         .frame(width: 320)
+    }
+
+    private var appIcon: some View {
+        Group {
+            if let image = AppIcon.image() {
+                Image(nsImage: image)
+                    .resizable()
+                    .scaledToFit()
+            } else {
+                Image(systemName: "music.note")
+                    .font(.system(size: 20, weight: .semibold))
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(width: 36, height: 36)
+        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
     }
 }

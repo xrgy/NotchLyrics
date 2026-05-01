@@ -10,11 +10,16 @@ DIST_DIR="$ROOT_DIR/dist"
 RELEASE_DIR="$ROOT_DIR/release"
 APP_BUNDLE="$DIST_DIR/$APP_NAME.app"
 ICON_FILE="$ROOT_DIR/packaging/$APP_NAME.icns"
+ICON_SOURCE_PNG="$ROOT_DIR/packaging/$APP_NAME.png"
 ASSET_PREFIX="$APP_NAME-$VERSION-macos-$ARCH"
 
 cd "$ROOT_DIR"
 
 env CLANG_MODULE_CACHE_PATH="$ROOT_DIR/.build/clang-module-cache" swift build -c release
+
+if [[ -f "$ICON_SOURCE_PNG" ]]; then
+  "$ROOT_DIR/scripts/update_app_icon.sh" "$ICON_SOURCE_PNG"
+fi
 
 rm -rf "$APP_BUNDLE"
 mkdir -p "$APP_BUNDLE/Contents/MacOS" "$APP_BUNDLE/Contents/Resources"

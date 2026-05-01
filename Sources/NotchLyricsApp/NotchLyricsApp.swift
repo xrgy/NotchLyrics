@@ -7,6 +7,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        if let icon = AppIcon.image() {
+            NSApp.applicationIconImage = icon
+        }
         panelController?.show()
     }
 }
