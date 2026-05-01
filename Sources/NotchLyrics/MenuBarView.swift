@@ -10,49 +10,48 @@ public struct MenuBarView: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
-            HStack(spacing: 10) {
+        HStack(alignment: .top, spacing: 14) {
+            VStack {
                 appIcon
+                Spacer(minLength: 0)
+            }
 
+            VStack(alignment: .leading, spacing: 7) {
                 VStack(alignment: .leading, spacing: 2) {
                     Text("NotchLyrics")
                         .font(.system(size: 16, weight: .bold))
+                        .lineLimit(1)
 
                     Text(version)
                         .font(.system(size: 11, weight: .medium))
                         .foregroundStyle(.secondary)
+                        .lineLimit(1)
                 }
-            }
 
-            Text(model.track.map { "\($0.title) · \($0.artistLine)" } ?? model.statusText)
-                .font(.system(size: 12, weight: .medium))
-                .foregroundStyle(.secondary)
-                .lineLimit(2)
+                Text(playbackLine)
+                    .font(.system(size: 12, weight: .medium))
+                    .foregroundStyle(model.errorText == nil ? Color.secondary : Color.orange)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
 
-            if let error = model.errorText {
-                Text(error)
-                    .font(.system(size: 12))
-                    .foregroundStyle(.orange)
-                    .lineLimit(3)
-            }
-
-            HStack {
-                if model.canAuthorize {
-                    Button("连接 Spotify") {
-                        model.authorize()
+                HStack(spacing: 8) {
+                    if model.canAuthorize {
+                        Button("连接 Spotify") {
+                            model.authorize()
+                        }
+                    } else {
+                        Button("断开连接") {
+                            model.signOut()
+                        }
                     }
-                } else {
-                    Button("断开连接") {
-                        model.signOut()
+                    Button("退出") {
+                        NSApplication.shared.terminate(nil)
                     }
-                }
-                Button("退出") {
-                    NSApplication.shared.terminate(nil)
                 }
             }
         }
         .padding(14)
-        .frame(width: 320)
+        .frame(width: 380)
     }
 
     private var appIcon: some View {
@@ -67,7 +66,21 @@ public struct MenuBarView: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .frame(width: 36, height: 36)
-        .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
+        .frame(width: 96, height: 96)
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
+
+    private var playbackLine: String {
+        if let track = model.track {
+            return [track.title, track.artistLine]
+                .filter { !$0.isEmpty }
+                .joined(separator: " · ")
+        }
+
+        if let error = model.errorText {
+            return error
+        }
+
+        return model.statusText
     }
 }
