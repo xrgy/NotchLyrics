@@ -51,7 +51,7 @@ public struct MenuBarView: View {
             }
         }
         .padding(12)
-        .frame(width: 256)
+        .frame(width: 276)
     }
 
     private var appIcon: some View {
