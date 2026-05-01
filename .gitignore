@@ -1,0 +1,16 @@
+.DS_Store
+.build/
+.swiftpm/
+DerivedData/
+
+# Local packaged app and generated release archives.
+dist/
+release/
+
+# Local editor state.
+.vscode/
+.idea/
+
+# Local runtime configuration and secrets must stay outside the repo.
+config.json
+token.json
