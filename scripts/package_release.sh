@@ -9,6 +9,7 @@ BUILD_DIR="$ROOT_DIR/.build/release"
 DIST_DIR="$ROOT_DIR/dist"
 RELEASE_DIR="$ROOT_DIR/release"
 APP_BUNDLE="$DIST_DIR/$APP_NAME.app"
+ICON_FILE="$ROOT_DIR/packaging/$APP_NAME.icns"
 ASSET_PREFIX="$APP_NAME-$VERSION-macos-$ARCH"
 
 cd "$ROOT_DIR"
@@ -16,10 +17,11 @@ cd "$ROOT_DIR"
 env CLANG_MODULE_CACHE_PATH="$ROOT_DIR/.build/clang-module-cache" swift build -c release
 
 rm -rf "$APP_BUNDLE"
-mkdir -p "$APP_BUNDLE/Contents/MacOS"
+mkdir -p "$APP_BUNDLE/Contents/MacOS" "$APP_BUNDLE/Contents/Resources"
 
 cp "$ROOT_DIR/packaging/Info.plist" "$APP_BUNDLE/Contents/Info.plist"
 cp "$BUILD_DIR/$APP_NAME" "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
+cp "$ICON_FILE" "$APP_BUNDLE/Contents/Resources/$APP_NAME.icns"
 chmod +x "$APP_BUNDLE/Contents/MacOS/$APP_NAME"
 
 mkdir -p "$RELEASE_DIR"
